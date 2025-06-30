@@ -1,12 +1,11 @@
-import './App.css'
+import './App.css';
 
 function App() {
-
   return (
     <main>
-        <h1>Aksel konsultasjon</h1>
+      <h1>Aksel konsultasjon</h1>
     </main>
-  )
+  );
 }
 
-export default App
+export default App;
