@@ -1,11 +1,12 @@
-import './App.less'
+import Header from './components/Header';
+import MainPage from './page/MainPage';
 
 function App() {
-
   return (
-    <main>
-      <h1>Aksel konsultasjon</h1>
-    </main>
+    <>
+      <Header />
+      <MainPage />
+    </>
   );
 }
 
