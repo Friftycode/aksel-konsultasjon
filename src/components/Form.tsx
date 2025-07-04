@@ -7,11 +7,11 @@ import {
   DatePicker,
   Textarea,
   TextField,
+  useDatepicker,
 } from '@navikt/ds-react';
 import styles from './Form.module.less';
 
 const Form = () => {
-  const [date, setDate] = useState<Date | undefined>(undefined);
   const [submitted, setSubmitted] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -36,22 +36,22 @@ const Form = () => {
   fromDate.setDate(fromDate.getDate() + 1);
 
   const toDate = new Date();
-  toDate.setDate(toDate.getDate() + 60);
   toDate.setDate(today.getDate() + 60);
+
+  const { datepickerProps, inputProps, selectedDay } = useDatepicker({
+    fromDate: fromDate,
+    toDate: toDate,
+    locale: 'nb',
+    disableWeekends: true,
+  });
 
   const handleTopicsChange = (val: string[]) => {
     setFormData((prev) => ({ ...prev, topics: val }));
   };
 
   const isValidName = (name: string) => {
-    const allowed =
-      'abcdefghijklmnopqrstuvwxyzæøåABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ -';
-    for (let i = 0; i < name.length; i++) {
-      if (!allowed.includes(name[i])) {
-        return false;
-      }
-    }
-    return true;
+    const nameRegex = /^[A-Za-zæøåÆØÅ -]+$/;
+    return nameRegex.test(name) && name.trim().length >= 3;
   };
 
   const validate = () => {
@@ -59,7 +59,7 @@ const Form = () => {
       name: formData.name
         ? isValidName(formData.name)
           ? ''
-          : 'Navnet kan kun inneholde bokstaver og mellomrom'
+          : 'Navnet må være minst 3 bokstaver og kun inneholde bokstaver og mellomrom'
         : 'Navn er påkrevd',
       email:
         formData.email.includes('@') && formData.email.includes('.')
@@ -68,7 +68,7 @@ const Form = () => {
       phone: formData.phone.match(/^(\+|00)?[\d\s-]{7,20}$/)
         ? ''
         : 'Telefonnummeret er ugyldig',
-      date: date ? '' : 'Du må velge en dato',
+      date: selectedDay ? '' : 'Du må velge en dato',
       topics: formData.topics.length > 0 ? '' : 'Velg minst ett tema',
       message:
         formData.message.length >= 10 ? '' : 'Meldingen må være minst 10 tegn',
@@ -111,23 +111,11 @@ const Form = () => {
         }
         error={errors.phone}
       />
-      <DatePicker
-        selected={date}
-        onSelect={setDate}
-        fromDate={fromDate}
-        toDate={toDate}
-        dropdownCaption
-        disableWeekends
-        showWeekNumber={true}
-      >
+      <DatePicker {...datepickerProps} dropdownCaption showWeekNumber={true}>
         <DatePicker.Input
           label="Når ønsker du å ha samtalen?"
-          value={date ? date.toLocaleDateString('nb-NO') : ''}
-          onChange={(e) => {
-            const parsed = new Date(e.target.value);
-            if (!isNaN(parsed.getTime())) setDate(parsed);
-          }}
           error={errors.date}
+          {...inputProps}
         />
       </DatePicker>
       <CheckboxGroup
