@@ -32,12 +32,14 @@ const Form = () => {
   });
 
   const today = new Date();
-  const fromDate = new Date(today);
-  fromDate.setDate(today.getDate() + 1);
-  const toDate = new Date(today);
-  toDate.setDate(today.getDate() + 90);
+  const fromDate = new Date();
+  fromDate.setDate(fromDate.getDate() + 1);
 
-  const handleChange = (val: string[]) => {
+  const toDate = new Date();
+  toDate.setDate(toDate.getDate() + 60);
+  toDate.setDate(today.getDate() + 60);
+
+  const handleTopicsChange = (val: string[]) => {
     setFormData((prev) => ({ ...prev, topics: val }));
   };
 
@@ -63,10 +65,9 @@ const Form = () => {
         formData.email.includes('@') && formData.email.includes('.')
           ? ''
           : 'Ugyldig e-postadresse',
-      phone:
-        formData.phone.length === 8 && /^\d+$/.test(formData.phone)
-          ? ''
-          : 'Telefon må være 8 sifre',
+      phone: formData.phone.match(/^(\+|00)?[\d\s-]{7,20}$/)
+        ? ''
+        : 'Telefonnummeret er ugyldig',
       date: date ? '' : 'Du må velge en dato',
       topics: formData.topics.length > 0 ? '' : 'Velg minst ett tema',
       message:
@@ -78,12 +79,11 @@ const Form = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
-    setSubmitted(true);
+    if (validate()) setSubmitted(true);
   };
 
   return (
-    <form className={styles.formnContainer} onSubmit={handleSubmit}>
+    <form className={styles.formContainer} onSubmit={handleSubmit} noValidate>
       <TextField
         label="Fullt navn"
         value={formData.name}
@@ -91,6 +91,7 @@ const Form = () => {
           setFormData((prev) => ({ ...prev, name: e.target.value }))
         }
         error={errors.name}
+        pattern="[A-Za-zæøåÆØÅ \-]+"
       />
       <TextField
         label="E-postadresse"
@@ -102,6 +103,8 @@ const Form = () => {
       />
       <TextField
         label="Telefonnummer"
+        type="tel"
+        inputMode="numeric"
         value={formData.phone}
         onChange={(e) =>
           setFormData((prev) => ({ ...prev, phone: e.target.value }))
@@ -120,13 +123,16 @@ const Form = () => {
         <DatePicker.Input
           label="Når ønsker du å ha samtalen?"
           value={date ? date.toLocaleDateString('nb-NO') : ''}
-          onChange={() => {}}
+          onChange={(e) => {
+            const parsed = new Date(e.target.value);
+            if (!isNaN(parsed.getTime())) setDate(parsed);
+          }}
           error={errors.date}
         />
       </DatePicker>
       <CheckboxGroup
         legend="Hva ønsker du hjelp med?"
-        onChange={handleChange}
+        onChange={handleTopicsChange}
         error={errors.topics}
       >
         <Checkbox value="job">Jobbsøking og karriere</Checkbox>
@@ -145,7 +151,7 @@ const Form = () => {
         Bestill
       </Button>
       {submitted && (
-        <div className={styles.confirmationText}>Takk for din bestilling!</div>
+        <p className={styles.confirmationText}>Takk for din bestilling!</p>
       )}
     </form>
   );
