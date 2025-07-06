@@ -1,3 +1,5 @@
+import Form from '../components/Form';
+import Conversation from '../assets/conversation.png';
 import styles from './MainPage.module.less';
 
 const MainPage = () => {
@@ -10,14 +12,13 @@ const MainPage = () => {
           utdanning eller andre valg knyttet til din situasjon. Tilbudet er
           gratis og tilpasses dine behov.
         </p>
+        <img
+          className={styles.conversationImage}
+          src={Conversation}
+          alt="Samtale med rådgiver"
+        />
+        <Form />
       </div>
-      <form className={styles.form}>
-        <h2>Avtal tid med en rådgiver</h2>
-        <p>
-          Fyll ut skjemaet under for å avtale en tid med en rådgiver. Du vil
-          motta en bekreftelse på e-post etter at du har sendt inn skjemaet.
-        </p>
-      </form>
     </main>
   );
 };
