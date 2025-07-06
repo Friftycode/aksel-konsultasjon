@@ -44,4 +44,4 @@ npm run dev
 
 ## Dokumentasjon
 
-Denne applikasjonen benytter NAV sitt designsystem [Aksel](https://aksel.nav.no/). for komponenter og visuell stil.
+Denne applikasjonen benytter NAV sitt designsystem [Aksel](https://aksel.nav.no/), for komponenter og visuell stil.
