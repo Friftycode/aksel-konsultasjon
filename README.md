@@ -1,7 +1,7 @@
 ## **Aksel konsultasjon**
 
 Aksel Konsultasjon er en enkel webapplikasjon for å bestille rådgivningstimer. Applikasjonen er utviklet som en øvelse i
-å bruke NAV sitt designsystem [Aksel](https://aksel.nav.no/).
+å bruke NAV sitt designsystem [Aksel](https://aksel.nav.no/) med [Darkside](https://aksel.nav.no/grunnleggende/darkside/ny-versjon-av-aksel-darkside).
 
 ![readme.png](src/assets/readme.png)
 
@@ -15,7 +15,7 @@ Aksel Konsultasjon er en enkel webapplikasjon for å bestille rådgivningstimer.
 - npm
 - ESLint
 - Prettier
-- Aksel (NAV designsystem)
+- Aksel (NAV designsystem) med Darkside
 
 ## Forutsetninger
 
@@ -44,4 +44,4 @@ npm run dev
 
 ## Dokumentasjon
 
-Denne applikasjonen benytter NAV sitt designsystem [Aksel](https://aksel.nav.no/), for komponenter og visuell stil.
+Denne applikasjonen benytter NAV sitt designsystem [Aksel](https://aksel.nav.no/), for komponenter og visuell stil, med [Darkside](https://aksel.nav.no/grunnleggende/darkside/ny-versjon-av-aksel-darkside).
